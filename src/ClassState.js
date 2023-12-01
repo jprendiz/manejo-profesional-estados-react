@@ -20,7 +20,7 @@ class ClassState extends React.Component {
 
         <input placeholder="Código de seguridad" />
         <button
-          onClick={() => (this.setState({error: !this.state.error}) ) }
+          onClick={() => (this.setState( prevState => ({error: !prevState.error }) ) ) }
         >Comprobar
         </button>
       </div>
