@@ -35,7 +35,7 @@ function UseState( { name } ) {
         <h2>Eliminar { name }</h2>
         <p>Por favor escriba el código de seguridad: </p>
 
-        { error && 
+        { error && !loading &&
           <p>El código es incorrecto</p> 
         }
 
@@ -50,7 +50,9 @@ function UseState( { name } ) {
         />
         
         <button 
-          onClick={()=>setLoading(prevState => !prevState)}
+          onClick={()=>{
+            setLoading(prevState => !prevState)
+          }}
         >Comprobar</button>
       </div>
     )
