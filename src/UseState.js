@@ -6,7 +6,9 @@ function UseState( { name } ) {
   const [state, setState] = useState({
     value: '',
     error: false,
-    loading: false
+    loading: false,
+    deleted: false,
+    confirmed: false,
   })
 
   console.log(state);
@@ -21,7 +23,7 @@ function UseState( { name } ) {
         if (state.value === SECURITY_CODE) {
           setState({
             ...state,
-            loading: false, error: false 
+            loading: false, error: false, confirmed: true 
           })
         } else {
           setState({ 
@@ -36,6 +38,7 @@ function UseState( { name } ) {
     console.log("Terminando el efecto");
   }, [state.loading])
 
+  if ( !state.deleted && !state.confirmed ) {
     return(
       <div>
         <h2>Eliminar { name }</h2>
@@ -69,6 +72,34 @@ function UseState( { name } ) {
         >Comprobar</button>
       </div>
     )
+  } else if ( state.confirmed && !state.deleted ) {
+      return (
+        <>
+          <h2> Estado de confirmación </h2>
+          <p> Seguro que desea eliminar el UseState? </p>
+          <button onClick={()=>setState({ 
+            ...state,
+            deleted: true, confirmed: true,
+          })}
+          > Confirmar </button>
+          <button onClick={()=>setState({ 
+            ...state,
+            deleted: false, confirmed: false,  value: ''
+          })}> Cancelar </button>
+        </>
+      )
+    } else {
+      return (
+        <>
+        <h3> Eliminado con éxito </h3>
+        <button onClick={()=>setState({ 
+              ...state,
+              deleted: false, confirmed: false, value: ''
+            })}
+        > Deshacer? </button>
+    </>
+    )
+  }
 }
 
 export { UseState }
