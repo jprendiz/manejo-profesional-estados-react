@@ -3,55 +3,68 @@ import { useEffect, useState } from "react"
 const SECURITY_CODE = 'paradigma'
 
 function UseState( { name } ) {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState({
+    value: '',
+    error: false,
+    loading: false
+  })
 
-  console.log(value);
+  console.log(state);
 
   useEffect ( () => {
     console.log("Empezando el efecto");
     
-    if ( loading ) {
+    if ( state.loading ) {
       setTimeout(() => {
         console.log("Haciendo la validación");
       
-        if (value === SECURITY_CODE) {
-          setLoading(false)
-          setError(false)
+        if (state.value === SECURITY_CODE) {
+          setState({
+            ...state,
+            loading: false, error: false 
+          })
         } else {
-          setLoading(false)
-          setError(true)
+          setState({ 
+            ...state,
+            loading: false, error: true
+          })
         }
       
         console.log("terminando la validación");
       }, 3000);
     }
     console.log("Terminando el efecto");
-  }, [loading])
+  }, [state.loading])
 
     return(
       <div>
         <h2>Eliminar { name }</h2>
         <p>Por favor escriba el código de seguridad: </p>
 
-        { error && !loading &&
+        { state.error && !state.loading &&
           <p>El código es incorrecto</p> 
         }
 
-        { loading && 
+        { state.loading && 
           <p>Cargando...</p> 
         }
 
         <input 
           placeholder="Código de seguridad" 
-          value = {value}
-          onChange={(e) => setValue(e.target.value)}
+          value = {state.value}
+          onChange={(e) => 
+            setState({
+              ...state, 
+              value: e.target.value
+            }) }
         />
         
         <button 
           onClick={()=>{
-            setLoading(prevState => !prevState)
+            setState({
+              ...state,
+              loading: true 
+            })
           }}
         >Comprobar</button>
       </div>
